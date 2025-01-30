@@ -11,6 +11,15 @@ void initialize_empty_board(Board grid) {
   }
 }
 
+void copy_grid(Board og_board, Board dest_board) {
+    for (int x=0; x<9; x++) {
+        for (int y=0; y<9; y++) {
+            dest_board[x][y] = og_board[x][y];
+        }
+    }
+
+}
+
 void print_empty_line() {
   int i;
   for (i = 0; i < 9; i++) {
