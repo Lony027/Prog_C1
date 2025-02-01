@@ -15,7 +15,7 @@ exo3: exo3.c
 	gcc exo3.c -o exo3_exe -Wall -ansi
 
 exo4: exo4.c
-	gcc exo4.c -o exo4_exe
+	gcc exo4.c -o exo4_exe -Wall -ansi
 
 exo5: exo5.c
 	gcc exo5.c -o exo5_exe -Wall -ansi
