@@ -5,14 +5,10 @@
 static Stack stack;
 
 /* Initialize correctly the stack*/
-void stack_init(void) {
-    stack.size = 0;
-}
+void stack_init(void) { stack.size = 0; }
 
 /* Returns the current size of the stack. */
-int stack_size(void) {
-    return stack.size;
-}
+int stack_size(void) { return stack.size; }
 
 /* Returns 1 if the stack is empty, returns 0 otherwise. */
 int stack_is_empty(void) {
@@ -24,14 +20,16 @@ int stack_is_empty(void) {
 
 /* Returns the element at the top of the stack. */
 int stack_top(void) {
-    /* ?@to-do when stack is empty? */
-    return stack.values[stack.size-1];
+    if (stack.size == 0) {
+        return 0;
+    }
+    return stack.values[stack.size - 1];
 }
 
 /* Pops the element at the top of the stack and returns it. */
 int stack_pop(void) {
     if (stack.size == 0) {
-        return 0; /* should raise an exception */
+        return 0;
     }
     int bufferTopElement = stack_top();
     stack.size--;
@@ -41,7 +39,6 @@ int stack_pop(void) {
 /* Pushes a given integer `n` at the top of the stack. */
 void stack_push(int n) {
     if (stack.size >= MAX_SIZE) {
-        /* should raise an exception */
         return;
     }
     stack.values[stack.size] = n;
@@ -51,11 +48,12 @@ void stack_push(int n) {
 /* Displays the content of the stack on the standard output. */
 void stack_display(void) {
     printf("Affichage de la pile\n");
-    printf("-------------\n");
+    printf("---------------------------------\n|\tIndex\t|\tValue\t|\n---------"
+           "------------------------\n");
     int i;
-    for (i = stack.size-1; i>=0; i--) {
-        printf("| %d\t| %d |\n",i+1 ,stack.values[i]);
-        printf("-------------\n");
+    for (i = stack.size - 1; i >= 0; i--) {
+        printf("|\t%d\t|\t%d\t|\n", i + 1, stack.values[i]);
+        printf("---------------------------------\n");
     }
 }
 
@@ -63,6 +61,4 @@ void stack_display(void) {
    responsible of the use of this function. The answers may be not
    relevant if a call is done outside the current size of the
    stack. */
-int stack_get_element(int index) {
-    return stack.values[index];
-}
+int stack_get_element(int index) { return stack.values[index]; }

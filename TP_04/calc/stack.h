@@ -3,10 +3,10 @@
 
 #define MAX_SIZE 15
 
-typedef struct stack{
-  int values[MAX_SIZE];
-  int size;
-}Stack;
+typedef struct stack {
+    int values[MAX_SIZE];
+    int size;
+} Stack;
 
 /* Initialize correctly the stack. */
 void stack_init(void);

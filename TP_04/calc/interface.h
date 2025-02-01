@@ -4,7 +4,7 @@
 #include "stack.h"
 
 #define HEIGHT_WINDOWS_PIX 600
-#define WIDTH_WINDOWS_PIX 800
+#define WIDTH_WINDOWS_PIX  800
 
 #define WAIT_TIME_MILLISEC 500
 
@@ -18,7 +18,7 @@ void display_stack(void);
 void display_transition_1(int number);
 void display_transition_2(int number);
 void display_operation(char op);
-void display_action_msg(const char* msg);
-void get_user_action(char* str_action);
+void display_action_msg(const char *msg);
+void get_user_action(char *str_action);
 
 #endif

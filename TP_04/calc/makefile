@@ -6,7 +6,7 @@ OBJ=stack.o interface.o main.o operation.o
 LDFLAGS=-lMLV -lm
 
 calc: $(OBJ)
-	$(CC) -o calc $(OBJ) $(LDFLAGS)
+	$(CC) -o calc_exe $(OBJ) $(LDFLAGS)
 
 stack.o: stack.c stack.h
 	$(CC) -c stack.c -o stack.o $(CFLAGS)
