@@ -4,7 +4,7 @@ LDFLAGS=
 OBJ=sudoku.o main.o in_out.o
 
 sudoku: $(OBJ)
-	$(CC) -o sudoku $(OBJ) $(CFLAGS)
+	$(CC) -o sudoku_exe $(OBJ) $(CFLAGS)
 
 main.o: main.c sudoku.h in_out.h
 	$(CC) -c main.c $(CFLAGS)
@@ -18,4 +18,4 @@ in_out.o: in_out.c in_out.h
 clean: 
 	rm -f *.o
 	rm -f *~
-	rm -f sudoku
+	rm -f sudoku_exe

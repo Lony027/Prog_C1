@@ -87,11 +87,11 @@ int get_max_fly_cached() {
 
 /* ------------------------------------------------------ MAIN */
 
-float get_exec_time_and_fly(int *fly, int (*f)()) {
+void get_exec_time_and_fly(int *fly, float *time, int (*f)()) {
     clock_t start = clock();
     *fly = f();
     clock_t end = clock();
-    return (float) (end - start) / CLOCKS_PER_SEC;
+    *time = (float) (end - start) / CLOCKS_PER_SEC;
 }
 
 int main(int argc, char *argv[]) {
@@ -101,24 +101,18 @@ int main(int argc, char *argv[]) {
     }
     int n = atoi(argv[1]); */
 
-    int fly_bruteforce, fly_cached;
-
-    float time_cached = get_exec_time_and_fly(&fly_cached, get_max_fly_cached);
+    int fly_cached;
+    float time_cached;
+    get_exec_time_and_fly(&fly_cached, &time_cached, get_max_fly_cached);
     printf("CACHED\nMAX_FLY %d, SIZE: %d, TIME:%f sec\n", fly_cached, SIZE,
            time_cached);
 
-    float time_bruteforce =
-        get_exec_time_and_fly(&fly_bruteforce, get_max_fly_bruteforce);
+    int fly_bruteforce;
+    float time_bruteforce;
+    get_exec_time_and_fly(&fly_bruteforce, &time_bruteforce,
+                          get_max_fly_bruteforce);
     printf("BRUTEFORCE\nMAX_FLY %d, SIZE: %d, TIME:%f sec\n", fly_bruteforce,
            SIZE, time_bruteforce);
 
     return 0;
 }
-
-/*
-    C formatter
-    https://en.wikipedia.org/wiki/C_data_types
-    Mettre dans un .md
-    Utilisation mémoire :
-    Temps :
- */

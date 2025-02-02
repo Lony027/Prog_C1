@@ -51,6 +51,7 @@ void solve(Board grid, int x, int y) {
   }
 }
 
+/* Grid 5 : 7 solutions */
 int main(int argc, char *argv[]) {
   Board B;
 
@@ -58,12 +59,7 @@ int main(int argc, char *argv[]) {
   if (error == 0) {
     return -1;
   }
-  /* print_board(B); */
-
-  /* initialize_empty_board(B); */
-  /*   print_board(B); */
 
   solve(B, 0, 0);
-  /* grid 5 à 7 solutions */
   return 0;
 }
