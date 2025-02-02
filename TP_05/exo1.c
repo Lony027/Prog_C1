@@ -217,14 +217,6 @@ int* merge_sort(int* array) {
 /* An empty main to test the compilation of the allocation and free
    functions. */
 
-void fill_random_array(int t[], int size) {
-    int i;
-    for (i = 0; i<size-1; i++) {
-        t[i] = rand()%100;
-    }
-    t[size-1]=-1;
-}
-
 void exercice_1() {
     int size_first_exercice = 6;
     int *t = allocate_integer_array(size_first_exercice);
@@ -344,17 +336,15 @@ void exercice_3() {
     free_integer_array(split_2);
 
     printf("merge sort\n");
-    int *to_sort = allocate_integer_array(15);
-    fill_random_array(to_sort,15);
+    int *to_sort =  random_array(15,100);
     print_array(to_sort);
     int *sorted_array = merge_sort(to_sort);
     print_array(sorted_array);
 }
 
 int main(int argc, char *argv[]) {
-    /* exercice_1(); */
-    /* exercice_2(); */
-
+    exercice_1();
+    exercice_2();
     exercice_3();
     return 0;
 }
