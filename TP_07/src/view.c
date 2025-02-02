@@ -1,9 +1,6 @@
 #include "view.h"
 #include "sudoku.h"
 #include <MLV/MLV_all.h>
-#include <MLV/MLV_color.h>
-#include <MLV/MLV_mouse.h>
-#include <MLV/MLV_window.h>
 
 #define WINDOW_WIDTH  1400
 #define WINDOW_HEIGTH 910
@@ -11,10 +8,7 @@
 #define OFFSET     5
 #define CELL_SCALE 100
 
-void free_window() {
-    MLV_wait_seconds(25);   // to remove
-    MLV_free_window();
-}
+void free_window() { MLV_free_window(); }
 
 void reset_cell(int x, int y) {
     MLV_draw_filled_rectangle(x + 1, y + 1, CELL_SCALE - 2, CELL_SCALE - 2,
@@ -89,32 +83,27 @@ void draw_board(Board grid, Board ref_grid) {
             val = grid[x][y];
             ref_val = ref_grid[x][y];
             if (ref_val != 0) {
-                draw_number_on_cell(ref_val, CELL_SCALE * x + OFFSET,
-                                    CELL_SCALE * y + OFFSET, MLV_COLOR_GRAY50);
+                draw_number_on_cell(val, CELL_SCALE * y + OFFSET,
+                                    CELL_SCALE * x + OFFSET, MLV_COLOR_GRAY50);
             } else if (val != 0) {
                 MLV_Color color = MLV_COLOR_WHITE;
                 if (is_coherent(grid, x, y) == 0) {
                     color = MLV_COLOR_RED;
                 }
-                draw_number_on_cell(val, CELL_SCALE * x + OFFSET,
-                                    CELL_SCALE * y + OFFSET, color);
+                draw_number_on_cell(val, CELL_SCALE * y + OFFSET,
+                                    CELL_SCALE * x + OFFSET, color);
             } else if (val == 0) {
-                reset_cell(CELL_SCALE * x + OFFSET, CELL_SCALE * y + OFFSET);
+                reset_cell(CELL_SCALE * y + OFFSET, CELL_SCALE * x + OFFSET);
             }
         }
     }
     MLV_update_window();
 }
 
-void assign_val_selector(int x_case, int y_case, int clicked_x, int clicked_y,
-                         int *val) {
-    *val = (3 * (y_case - 3) + (x_case - 10) + 1);
-}
-
 void get_clicked_case(int *x, int *y) {
     MLV_wait_mouse(x, y);
-    *x /= CELL_SCALE;
-    *y /= CELL_SCALE;   // OFFSET ?
+    *x = (*x - OFFSET) / CELL_SCALE;
+    *y = (*y - OFFSET) / CELL_SCALE;   // OFFSET ?
 }
 
 void init_view(Board grid) {

@@ -1,5 +1,3 @@
-#include <stdio.h>
-
 #include "sudoku.h"
 
 void initialize_empty_board(Board grid) {
@@ -20,53 +18,45 @@ void copy_grid(Board og_board, Board dest_board) {
 
 }
 
-void print_empty_line() {
-  int i;
-  for (i = 0; i < 9; i++) {
-    if (i == 0 || i == 3 || i == 6) {
-      putchar('|');
-    }
-    printf("|     ");
-  }
-  printf("||\n");
-}
+int is_coherent(Board grid, int x, int y) {
+    int val = grid[x][y];
+    int i;
 
-void print_line(Board grid, int y) {
-  int i, val;
-  for (i = 0; i < 9; i++) {
-    val = grid[y][i];
-    if (i == 0 || i == 3 || i == 6) {
-      putchar('|');
+    for (i = 0; i < 9; i++) {
+        if (i != x && grid[i][y] == val) {
+            return 0;
+        }
+        if (i != y && grid[x][i] == val) {
+            return 0;
+        }
     }
 
-    if (val == 0) {
-      printf("|     ");
-    } else {
-      printf("|  %d  ", val);
+    int block_x = (x / 3) * 3;
+    int block_y = (y / 3) * 3;
+
+    int j;
+    for (i = 0; i < 3; i++) {
+        for (j = 0; j < 3; j++) {
+            int bx = block_x + i;
+            int by = block_y + j;
+            if (bx == x && by == y)
+                continue;
+            if (grid[bx][by] == val) {
+                return 0;
+            }
+        }
     }
-  }
-  printf("||\n");
+
+    return 1;
 }
 
-void print_simple_separator() {
-  printf("-----------------------------------------------------------\n");
-}
-
-void print_bold_separator() {
-  printf("===========================================================\n");
-}
-
-void print_board(Board grid) {
-  int i;
-  print_bold_separator();
-  for (i = 0; i < 9; i++) {
-    print_empty_line();
-    print_line(grid, i);
-    print_empty_line();
-    if (i == 2 || i == 5 || i == 8) {
-      print_bold_separator();
-    } else {
-      print_simple_separator();
+int is_won(Board grid) {
+    for (int x = 0; x < 9; x++) {
+        for (int y = 0; y < 9; y++) {
+            if (grid[y][x] == 0 || !is_coherent(grid, y, x)) {
+                return 0;
+            }
+        }
     }
-  }
+    return 1;
 }

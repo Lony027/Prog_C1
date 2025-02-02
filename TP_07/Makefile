@@ -25,10 +25,10 @@
 # 	rm -f *~
 # 	rm -f sudoku
 
-EXEC=sudoku
+EXEC=sudoku_exe
 
 CC = gcc
-CFLAGS = -Wall -std=c17 # bien
+CFLAGS = -Wall -std=c17
 LDFLAGS = -lMLV -lm
 
 SRC_DIR = src
@@ -58,6 +58,6 @@ clean:
 	rm -rf $(BIN_DIR) $(EXEC)
 
 mrproper: clean
-	rm -rf *~
+	rm -rf *_exe
 
 .PHONY: all run clean mrproper

@@ -90,7 +90,6 @@ int *fill_array(void) {
         printf("Value at the index, %d : ", i);
         scanf("%d", &input_array_value);
         array[i] = input_array_value;
-        /* HANDLE NEGATIVE VALUE */
         putchar('\n');
     }
     array[tab_size] = -1;
@@ -133,81 +132,98 @@ int *concat_array(int *first, int *second) {
 
 /* EXERCICE 3 --------------------------------------------------------- */
 
-/* Array in args already sorted*/
-/* Manière récursive de le faire */
 int *merge_sorted_arrays(int *first, int *second) {
-    /* verif array pas vide */
     int first_size = array_size(first) - 1;
     int second_size = array_size(second) - 1;
 
-    int merged_array_size = first_size + second_size;
-    int *merged_array = allocate_integer_array(merged_array_size);
+    int merged_size = first_size + second_size + 1;
+    int *merged = allocate_integer_array(merged_size);
 
-    int index_first = 0;
-    int index_second = 0;
-    int smallest_value, i;
-    for (i = 0; i < merged_array_size; i++) {
-
-        if (index_first < first_size && index_second < second_size) {
-            if (first[index_first] < second[index_second]) {
-                smallest_value = first[index_first];
-                index_first++;
-            } else {
-                smallest_value = second[index_second];
-                index_second++;
-            }
-        } else if (index_first < first_size && index_second >= second_size) {
-            smallest_value = first[index_first];
-            index_first++;
-        } else if (index_first >= first_size && index_second < second_size) {
-            smallest_value = second[index_second];
-            index_second++;
+    int i = 0, j = 0, k = 0;
+    while (i < first_size && j < second_size) {
+        if (first[i] < second[j]) {
+            merged[k] = first[i];
+            i++;
+        } else {
+            merged[k] = second[j];
+            j++;
         }
-        merged_array[i] = smallest_value;
+        k++;
     }
 
-    merged_array[merged_array_size] = -1;
-    return merged_array;
+    while (i < first_size) {
+        merged[k] = first[i];
+        i++;
+        k++;
+    }
+    while (j < second_size) {
+        merged[k] = second[j];
+        j++;
+        k++;
+    }
+
+    merged[merged_size - 1] = -1;
+
+    return merged;
 }
 
-void split_arrays(int *array, int **first, int **second) {
-    int tab_size = array_size(array) - 1;
+void split_arrays(int* array, int** first, int** second) {
+    int size = array_size(array)-1;
+    int first_size = (size + 1) / 2;
+    int second_size = size / 2;
 
-    int moitie = tab_size / 2;
-    int reste = tab_size % 2;
+    *first = allocate_integer_array(first_size+1);
+    *second = allocate_integer_array(second_size+1);
 
-    int first_tab_size = moitie + reste;
-    int second_tab_size = moitie;
-
-    *first = allocate_integer_array(first_tab_size);
-    *second = allocate_integer_array(second_tab_size);
-
-    int i, offset;
-    for (i = 0; i < first_tab_size; i++) {
-        (*first)[i] = *(array + i);
+    int i;
+    for (i = 0; i < first_size; i++) {
+        (*first)[i] = array[i];
     }
-    (*first)[first_tab_size] = -1;
+    (*first)[first_size]=-1;
 
-    offset = i;
-    for (i = 0; i < moitie; i++) {
-        (*second)[i] = *(array + i + offset);
+    for (i = 0; i < second_size; i++) {
+        (*second)[i] = array[first_size + i];
     }
-    (*second)[second_tab_size] = -1;
+    (*second)[second_size]=-1;
 }
 
-/* int *merge_sort(int *array) {
-    int tab_size = array_size(array) - 1;   /* enlever le -1? */
-    if (tab_size <= 1) {
-        return array;
-    } else {
-         return merge_sorted_arrays(merge_sort());
+
+int* merge_sort(int* array) {
+    if (array_size(array)-1 < 2) {
+        int* single = allocate_integer_array(2);
+        single[0] = array[0];
+        single[1] = -1;
+        return single;
     }
-} */
+    
+    int* left;
+    int* right;
+    split_arrays(array, &left, &right);
+    
+    left = merge_sort(left);
+    right = merge_sort(right);
+    
+    int* sorted_array = merge_sorted_arrays(left, right);
+    
+    free_integer_array(left);
+    free_integer_array(right);
+    
+    return sorted_array;
+}
+
 
 /* -------------------------------------------------------------------- */
 
 /* An empty main to test the compilation of the allocation and free
    functions. */
+
+void fill_random_array(int t[], int size) {
+    int i;
+    for (i = 0; i<size-1; i++) {
+        t[i] = rand()%100;
+    }
+    t[size-1]=-1;
+}
 
 void exercice_1() {
     int size_first_exercice = 6;
@@ -308,22 +324,31 @@ void exercice_3() {
     print_array(first);
     print_array(second);
 
-    int *sorted_merged_array = merge_sorted_arrays(first, second);
-    print_array(sorted_merged_array);
+    int *third = merge_sorted_arrays(first, second);
+    print_array(third);
 
-    putchar('\n');
+    printf("splitted\n");
 
-    int *first_p;
-    int *second_p;
-    split_arrays(sorted_merged_array, &first_p, &second_p);
-    print_array(first_p);
-    print_array(second_p);
+    int* split_1 = NULL;
+    int* split_2 = NULL;
+    
+    split_arrays(third, &split_1, &split_2);
 
-    free_integer_array(sorted_merged_array);
+    print_array(split_1);
+    print_array(split_2);
+
     free_integer_array(first);
     free_integer_array(second);
-    free(first_p);
-    free(second_p);
+    free_integer_array(third);
+    free_integer_array(split_1);
+    free_integer_array(split_2);
+
+    printf("merge sort\n");
+    int *to_sort = allocate_integer_array(15);
+    fill_random_array(to_sort,15);
+    print_array(to_sort);
+    int *sorted_array = merge_sort(to_sort);
+    print_array(sorted_array);
 }
 
 int main(int argc, char *argv[]) {
